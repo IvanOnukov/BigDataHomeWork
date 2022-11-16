@@ -19,16 +19,19 @@ def validation_employees_data(list_of_data):
 
 if __name__ == '__main__':
     dataReader = open("../sharedData/task_file.txt", 'r')
-    dataWriter = open("tmp", 'w')
+    dataWriterValidData = open("tmp", 'w')
+    dataWriterBadData = open("badData", 'w')
     try:
-        title = dataReader.readline()
-        data = dataReader.readlines()
+        title = dataReader.readline()  # title file
+        data = dataReader.readlines()  # read all lines from file
         for line in data:
             if validation_employees_data(line.split(', ')):
-                dataWriter.write(line)
+                dataWriterValidData.write(line)
+            else:
+                dataWriterBadData.write(line[2::])  # write not valid line in file
     finally:
         dataReader.close()
-        dataWriter.close()
+        dataWriterValidData.close()
 
     dataReader = open("tmp", 'r')
     try:
@@ -37,24 +40,22 @@ if __name__ == '__main__':
 
         for line in data:
             tmpVal = line.split(', ')
-            tmpList = []
-            tmpList.append(tmpVal[1])
-            tmpList.append(tmpVal[2])
+            tmpList = [tmpVal[1], tmpVal[2]]
             listName.append(tmpList)
         email_name = email_gen(listName)
     finally:
         dataReader.close()
 
     dataReader = open("tmp", 'r')
-    dataWriter = open("dataBase", 'w')
+    dataWriterValidData = open("dataBase", 'w')
     try:
         data = dataReader.readlines()
         i = 0
-        dataWriter.write(title)
+        dataWriterValidData.write(title)
         for line in data:
             if validation_employees_data(line.split(', ')):
-                dataWriter.write(str(email_name[i]) + ' '*4 + line[2::])
+                dataWriterValidData.write(str(email_name[i]) + ' ' * 4 + line[2::])
                 i += 1
     finally:
         dataReader.close()
-        dataWriter.close()
+        dataWriterValidData.close()

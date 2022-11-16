@@ -1,6 +1,6 @@
 import random
-import string
 import re
+import string
 
 
 def validation_password(password: str):
